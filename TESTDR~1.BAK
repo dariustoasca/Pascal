@@ -1,0 +1,185 @@
+program SquidGame;
+
+uses crt, graph, venbuton, mouse2, dos;
+const lat=40;dx=30;dy=30;
+
+var x,y,nrinc,ales,nr,gd, gm, xi, yi,i,j,cod:integer;
+    sem:boolean;
+    b:array[1..10,1..20] of button;
+    s:string;
+
+{----------------------------------------------------------------------------}
+
+procedure init;
+begin
+     gd:=detect;
+     initgraph(gd,gm,'');
+     setbkcolor(9);
+end;
+
+{----------------------------------------------------------------------------}
+
+procedure drum;
+var i,x,y,y1,t,y2:integer;
+    s:string;
+begin
+     x:=20;
+     y:=100;
+     y1:=350;
+     y2:=250;
+     for i:=1 to 10  do
+         begin
+              t:=random(2);
+              str(t,s);
+              buton(b[1,i], x,y,x+lat,y+lat,yellow,7,s);  {14,4}
+              t:=(1+t) mod 2;
+              str(t,s);
+              buton(b[2,i], x,y1,x+lat,y1+lat,yellow,7,s); {14,4}
+              x:=x+60;
+         end;
+end;
+
+{----------------------------------------------------------------------------}
+
+procedure meniu;
+begin
+     mouseon;
+     definire_buton(b[4,1],87,getmaxy-2,197,getmaxy-24,7,1,'EXIT');
+     pune_buton(b[4,1]);
+     definire_buton(b[5,1],430,getmaxy-2,540,getmaxy-24,7,1,'RETRY');
+     pune_buton(b[5,1]);
+     buton(b[4,1],87,getmaxy-2,197,getmaxy-24,7,1,'EXIT');
+     pune_buton(b[4,1]);
+     buton(b[5,1],430,getmaxy-2,540,getmaxy-24,7,1,'RETRY');
+     pune_buton(b[5,1]);
+end;
+
+{----------------------------------------------------------------------------}
+
+procedure palpai(c:integer);
+var  i,j,cul:integer;
+begin
+     for i:=1 to 20 do
+         begin
+              cul:=1+random(15);
+              b[1,c].bcolor:=cul;
+              b[1,c].tcolor:=cul;
+              pune_buton(b[1,c]);
+              b[2,c].bcolor:=cul;
+              b[2,c].tcolor:=cul;
+              pune_buton(b[2,c]);
+              delay(20);
+         end;
+     b[1,c].bcolor:=14;
+     b[1,c].tcolor:=14;                  {14}
+     pune_buton(b[1,c]);
+     b[2,c].bcolor:=14;
+     b[2,c].tcolor:=14;                  {14}
+     pune_buton(b[2,c]);
+end;
+
+{----------------------------------------------------------------------------}
+
+procedure linie;
+begin
+     setcolor(7);
+     {sus}
+     bar(20,100,570,100);
+     bar(20,101,570,101);
+     bar(20,102,570,102);
+
+     bar(20,137,570,137);
+     bar(20,138,570,138);
+     bar(20,139,570,139);
+     {jos}
+     bar(20,350,570,350);
+     bar(20,351,570,351);
+     bar(20,352,570,352);
+
+     bar(20,387,570,387);
+     bar(20,388,570,388);
+     bar(20,389,570,389);
+end;
+
+{-----------------------------PROGRAM PRINCIPAL------------------------------}
+  begin
+       init; drum; meniu; mouseon;
+       repeat
+          for i:=1 to 10 do
+             begin
+                pune_buton(b[1,i]);
+                pune_buton(b[2,i]);
+             end;
+          nr:=1;
+{---}     pune_buton(b[4,1]); pune_buton(b[5,1]);
+{---}     if buton_apasat(b[4,1]) then halt;
+          settextstyle(10,0,4);
+          setcolor(yellow);
+          outtextxy(172,0,'Squid Game');
+          repeat
+              palpai(nr);
+              sem:=false;
+              repeat
+                    for i:=1 to 2 do
+                        if buton_apasat(b[i,nr]) then
+                           begin
+                                sem:=true;
+                                ales:=i;
+                           end;
+              until sem;
+              if b[ales,nr].t='1' then nr:=nr+1
+              else
+                  begin
+                       NRINC:=NRINC-1;
+                       STR(nrinc,s);
+                       s:='Number of Attempts : '+s;
+                       buton(b[3,1],x,y,x+200,y+50,7,1,s);
+                       nr:=1;
+                  end;
+          until (nr>2) or (nr=1) or buton_apasat(b[4,1]);{>10}
+          mouseon;
+{---}     if buton_apasat(b[5,1]) then
+             begin
+                  nr:=1;
+                  nrinc:=3; {8}
+             end;
+     until (nr>2) or (nrinc=0) or buton_apasat(b[4,1]); {>10}
+
+repeat
+          nr:=1;
+{---}     pune_buton(b[4,1]); pune_buton(b[5,1]);
+          repeat
+              sem:=false;
+              repeat
+                    for i:=4 to 5 do
+                        if buton_apasat(b[i,1]) then
+                           begin
+                                sem:=true;
+                                ales:=i;
+                           end;
+              until sem;
+              if b[ales,1].t='exit' then halt
+              else
+                  begin
+                       nr:=1;
+                       nrinc:=9;
+                  end;
+          until (nr>2) or (nr=1) or buton_apasat(b[4,1]);{>10}
+          mouseon;
+{---}     if buton_apasat(b[5,1]) then
+             begin
+                  nr:=1;
+                  nrinc:=3; {8}
+             end;
+     until (nr>2) or (nrinc=0) or buton_apasat(b[4,1]); {>10}
+
+
+
+
+
+
+
+
+
+readln;
+end.

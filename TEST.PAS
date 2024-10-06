@@ -1,0 +1,19 @@
+uses crt;
+type vector=array [1..100] of integer;
+var v:vector;
+    i,n,k,aux:integer;
+begin
+     clrscr;
+     readln(n);
+     for i:=1 to n do readln(v[i]);
+     for i:=2 to n div 2 do
+         begin
+              aux:=v[i];
+              v[i]:=v[n-i+1];
+              v[n-i+1]:=aux;
+         end;
+     for i:=1 to n do if v[i] < 0 then v[i]:=abs(v[i])
+         else v[i]:=-v[i]                              ;
+     for i:=1 to n do write(v[i],'  ');
+     readln;
+end.
